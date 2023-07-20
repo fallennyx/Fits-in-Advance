@@ -3,11 +3,15 @@
 import os 
 import openai
 import requests
+from weatherAPI import WeatherReport
 
 class Dall_Images:
     def __init__(self, Api_key):
         openai.api_key = Api_key
-    #i can change this function so it sends an array with the url's in case we're going to have more than 1 image
-    def get_imageURL(self, promptInput, image_num):
-        image = openai.Image.create(prompt = promptInput, n = image_num, size = "256x256") #var image is a dictionary with the url's
+    
+    def get_imageURL(self, promptInput):
+        image = openai.Image.create(prompt = promptInput, n = 1, size = "256x256") #var image is a dictionary with the url's
         return image["data"][0]["url"] #Returns a string with the url
+
+#test = Dall_Images('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')
+#print(test.get_imageURL("feminine spring outfit"))
