@@ -9,7 +9,7 @@ class WeatherReport:
         self.api_key = Api_key
     
     def get_forecast(self, location):
-        location = 'porto alegre'
+        #location = 'porto alegre'
         week_forecast = []
         response = requests.get(f'http://api.weatherapi.com/v1/forecast.json?key={self.api_key}&q={location}&days=7&aqi=no&alerts=no')
         weather = response.json()
