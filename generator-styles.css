@@ -1,0 +1,31 @@
+* {
+    color:#262220;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body{
+    background-color: #F7F1F0;
+}
+
+.page-title{
+    text-align: center;
+    font-size: large;
+}
+
+.location-inputs{
+    display: flexbox;
+    justify-content: center;
+    text-align: center;
+}
+
+.current-location-button{
+    padding: 25px;
+    border-radius: 4px;
+    color:antiquewhite;
+    
+}
+
+.button{
+    color:khaki;
+    background-color: #262220;
+}
