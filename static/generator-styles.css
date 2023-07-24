@@ -18,9 +18,19 @@ body{
 }
 
 .location-inputs{
-    display: flexbox;
+  
+    display: grid;
+    /* text-align: inherit; */
+    align-content: center;
     justify-content: center;
-    text-align: center;
+    align-items: center;
+    justify-items: center;
+    
+}
+
+.location-search-bar {
+  justify-content: center;
+  display: contents;
 }
 
 .current-location-button{
