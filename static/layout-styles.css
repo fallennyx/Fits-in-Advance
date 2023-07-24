@@ -1,0 +1,39 @@
+.page-background{
+    background-color: #F7F1F0;
+    width: 100%;
+    min-height: 100vh;
+    background: linear-gradient(45deg,#E3BE9B,#C3A6A0 )
+}
+
+*{
+    color: #262220;
+    font-family: "Helvetica Neue", "HelveticaNeue-Light", "Helvetica Neue Light", Helvetica, Arial, "Lucida Grande", sans-serif; 
+    font-weight: 300;
+}
+
+.navbar{
+    background-color: C3A6A0;
+}
+
+.nav-item{
+    color: #262220;
+}
+
+.navbar-toggler-icon{
+        padding: 15px 36px;
+        font-size: 16px;
+        color: #C3A6A0;
+        border: 2px solid #C3A6A0;
+        border-color: #C3A6A0;
+        border-radius: 10px;
+}
+
+.nav-item:hover{
+        color: #C3A6A0;
+        transition: 0.2s;
+}
+
+.home-title{
+    text-align: center;
+    font-weight: bold;
+}

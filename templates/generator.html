@@ -1,0 +1,16 @@
+{% extends "layout.html" %} {% block title %}Generator{% endblock %}
+{% block content %}
+    <link rel="stylesheet" href="static/generator-styles.css" type="text/css">
+
+    <h1 class="page-title">Let's Plan Your Fit!</h1>
+   
+    <div class="location-inputs">
+        <div class="current-location-button">
+            <button class="curr-loc-result button" type="submit">Current location</button>
+        </div>
+        <div class="location-search-bar">
+            <input type="text" placeholder="Search for destination">
+            <button class="search-result button" type="submit">Search</button>
+        </div>
+    </div>
+{% endblock %}
