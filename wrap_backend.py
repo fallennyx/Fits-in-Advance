@@ -29,6 +29,9 @@ class Wrap_backend:
             week_params.append(image_param)
         return week_params
 
+    def getForecast(self, location):
+        return self.weather_obj.get_forecast(location)
+
     def get_imageList(self, gender, location):
         dall_input = self.get_imageParams(location)
         url_list = []
