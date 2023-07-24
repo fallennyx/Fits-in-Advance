@@ -12,7 +12,7 @@ def get_outfits():
     outfits = wrap_obj.get_imageList(gender, location) #returns a list with strings inside each one being a url a picture
     return jsonify(outfits)
 
-@data.route('/get_imageList', methods=['GET'])
+@data.route('/get_getForecast', methods=['GET'])
 def get_forecast():
     location = category.args.get('location')
     forecast = wrap_obj.getForecast(location) #returns a list of lists, where each element represents a day with climate, temperature, and rain check.
