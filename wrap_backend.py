@@ -40,6 +40,7 @@ class Wrap_backend:
             time.sleep(10)
             url_list.append(image_url)
         #print(url_list[0])
+        return url_list
 
 #test = Wrap_backend(dallKey, weatherKey)
 #print(test.get_imageParams("porto alegre"))
