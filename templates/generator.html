@@ -6,11 +6,33 @@
    
     <div class="location-inputs">
         <div class="current-location-button">
-            <button class="curr-loc-result button" type="submit">Current location</button>
+            <button class="curr-loc-result button" type="submit" onclick="getCurrentLocation()">Current location</button>
         </div>
         <div class="location-search-bar">
             <input type="text" placeholder="Search for destination">
-            <button class="search-result button" type="submit">Search</button>
+            <button class="search-result button" type="submit" onclick="searchLocation()">Search</button>
         </div>
     </div>
+    <script>
+        function getCurrentLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition);
+            } else {
+                alert("Geolocation is not supported by this browser.");
+            }
+        }
+         function showPosition(position) {
+            const latitude = position.coords.latitude;
+            const longitude = position.coords.longitude;
+            // Do something with the latitude and longitude values
+             // Redirect to the new page
+            window.location.href = "newpage.html";
+        }
+         function searchLocation() {
+            const locationInput = document.getElementById("location-input").value;
+            // Do something with the location input value
+             // Redirect to the new page
+            window.location.href = "newpage.html";
+        }
+    </script>
 {% endblock %}
