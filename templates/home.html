@@ -1,5 +1,6 @@
 {% extends "layout.html" %} {% block title %}Car Spec Finder{% endblock %}
 {% block content %}
+
 <link rel="stylesheet" href="../static/home-styles.css">
 <div class="home-background">
     <br/>
@@ -39,6 +40,13 @@
 
 <br/>
 
-<button class="button" role="button"><a href="/generator" style="color: #F7F1F0; text-decoration: none;">Get Started<a/></button>
-
+<button id="myButton" class="button" role="button">
+  <a href="/generator" style="color: #F7F1F0; text-decoration: none;">
+    Get Started
+  </a>
+</button><script>
+    document.getElementById("myButton").addEventListener("click", function() {
+      window.location.href = "/generator";
+    });
+  </script>
 {% endblock %}
