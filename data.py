@@ -5,7 +5,7 @@ from wrap_backend import Wrap_backend
 
 data = Blueprint('data', __name__)
 
-wrap_obj = Wrap_backend('dalle_key','forecast_key')
+wrap_obj = Wrap_backend('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','903e781b4a8c47d9ab4200052231907')
 
 def get_outfits(gender, location):
     #OLD!gender = category.args.get('gender')

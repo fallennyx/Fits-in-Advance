@@ -38,11 +38,9 @@ def get_data_from_results():
 
             city = data.get("city")
             gender = data.get("gender")
-
             forecast = get_forecast(city)
-            outfit=get_outfits(gender,city)
-            datadic={"forecast":forecast,"outfit":outfit}
-
+            outfits=get_outfits(gender,city)
+            datadic={"forecast":forecast,"outfits":outfits}
             return jsonify(datadic)
         except Exception as e:
             return jsonify({"error": str(e)}), 400
