@@ -40,9 +40,10 @@ def get_data_from_results():
             gender = data.get("gender")
 
             forecast = get_forecast(city)
-            #outfit=get_outfits(gender,location)
-            #return outfit too when open ai key fixed
-            return (forecast)
+            outfit=get_outfits(gender,city)
+            datadic={"forecast":forecast,"outfit":outfit}
+
+            return jsonify(datadic)
         except Exception as e:
             return jsonify({"error": str(e)}), 400
 app.register_blueprint(views, url_prefix="/")
