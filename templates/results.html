@@ -1,67 +1,40 @@
-{% extends "layout.html" %} {% block title %}Results {% endblock %}
+{% extends "layout.html" %}
+{% block title %}Results{% endblock %}
+
 {% block content %}
 
 <body>
     <h1>Results</h1>
 
-    <!-- Display the processed data here -->
     <div id="outfits-info"></div>
     <div id="forecast-info"></div>
 
     <!-- Display the images -->
     <div id="image-gallery"></div>
-
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        const city = sessionStorage.getItem("city");
-        const gender = sessionStorage.getItem("gender");
+        const city = sessionStorage.getItem('city');
+        const gender = sessionStorage.getItem('gender');
 
-        // Make the AJAX POST request to the Flask backend
-        fetch('/get_data_from_results', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
+        const data = {
+            "city": city,
+            "gender": gender
+        };
+        console.log(data);
+
+        $.ajax({
+            url: "/x",
+            method: "POST",
+            contentType: "application/json",
+            data: JSON.stringify(data),
+            success: function(response) {
+                console.log(response);
             },
-            body: JSON.stringify({
-                "city": city,
-                "gender": gender
-            })
-        })
-        .then(response => response.json())
-        .then(data => {
-            // Updates the outfits info in the div with id "outfits-info"
-            const outfitsInfoDiv = document.getElementById("outfits-info");
-            outfitsInfoDiv.innerHTML = "<h2>Outfits Info</h2>";
-            for (const outfit in data.outfits) {
-                outfitsInfoDiv.innerHTML += `<p><strong>${outfit}:</strong> ${data.outfits[outfit]}</p>`;
+            error: function(error) {
+                console.error('Error fetching data:', error);
             }
-
-            // Updates the forecast info in the div with id "forecast-info"
-            const forecastInfoDiv = document.getElementById("forecast-info");
-            forecastInfoDiv.innerHTML = "<h2>Forecast Info</h2>";
-            for (const day of data.forecast) {
-                forecastInfoDiv.innerHTML += `<p><strong>Temperature:</strong> ${day[0]} °F</p>`;
-                forecastInfoDiv.innerHTML += `<p><strong>Condition:</strong> ${day[1]}</p>`;
-                forecastInfoDiv.innerHTML += `<p><strong>Rain Check:</strong> ${day[2] ? "Yes" : "No"}</p>`;
-            }
-
-            // Display the images in the div with id "image-gallery"
-            const imageGalleryDiv = document.getElementById("image-gallery");
-            imageGalleryDiv.innerHTML = "<h2>Image Gallery</h2>";
-            for (const imageUrl of data.image_list) {
-                // Creates an image element for each URL and add it to the gallery
-                const img = document.createElement("img");
-                img.src = imageUrl;
-                img.alt = "Outfit Image";
-                img.width = "200";
-                img.height = "200";
-                imageGalleryDiv.appendChild(img);
-            }
-        })
-        .catch(error => {
-            console.error('Error fetching data:', error);
         });
     </script>
+
 </body>
 {% endblock %}
-
-
