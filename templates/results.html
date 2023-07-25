@@ -2,12 +2,12 @@
 {% block title %}Results{% endblock %}
 
 {% block content %}
-
+<link rel="stylesheet" type="text/css" href="static/results-styles.css">
 <body>
     <h1>Results</h1>
 
-    <div id="outfits-info"></div>
-    <div id="forecast-info"></div>
+    <div id="outfits-info" class="outfit-pic"></div>
+    <div id="forecast-info" class="forecast-items"></div>
 
     <!-- Display the images -->
     <div id="image-gallery"></div>
@@ -35,13 +35,15 @@
                 const forecastInfoDiv = $("#forecast-info");
                 forecastInfoDiv.empty(); // Clear any previous content
 
+                let dayNum = 1
                 forecastData.forEach(day => {
                     const temperature = day[0];
                     const weatherDescription = day[1];
                     const precipitation = day[2];
-
-                    const forecastItem = `<p>Temperature: ${temperature}°C, Weather: ${weatherDescription}, Precipitation: ${precipitation}</p>`;
+                    
+                    const forecastItem = `<p><b>The forecast for Day ${dayNum} of next week</b> <br>Temperature: ${temperature}°F<br> Weather: ${weatherDescription}<br> Precipitation: ${precipitation}</p>`;
                     forecastInfoDiv.append(forecastItem);
+                    dayNum ++;
                 });
 
                 // Display outfit information

@@ -1,0 +1,21 @@
+#outfits-info img{
+    max-width: 100%;
+    max-height: 100%;
+}
+
+#outfits-info {
+    justify-content: space-between;
+    display: flex;
+    align-items: center;
+}
+
+.forecast-items{
+    justify-content: space-evenly;
+    text-align: left;
+    margin: 20px;
+}
+
+.outfit-pic{
+    align-items: center;
+    align-content: center;
+}
