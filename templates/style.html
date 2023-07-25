@@ -1,10 +1,19 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>HI ITS MARIO</title>
+    <title></title>
 </head>
 <body>
-
+    <h1>Masculine or Feminine?</h1>
+    <button onclick="storeGender('masculine')">Masculine</button>
+    <button onclick="storeGender('feminine')">Feminine</button>
+     <script>
+        function storeGender(gender) {
+            sessionStorage.setItem('gender', gender);
+            window.location.href = `results.html`;
+        }
+    </script>
 </body>
 </html>

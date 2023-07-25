@@ -1,8 +1,9 @@
 import requests
 from geopy.geocoders import Nominatim
-
+import os
+shop_key = os.environ.get("shop_key")
 def get_shopping_info(query, location):
-    api_key = "2769705d67df11795e20d4fc3a8b28f0bbf7e3cf55ef7e716d1ebef6a39d404f"
+    api_key =shop_key
     url = f"https://serpapi.com/search.json?engine=google_shopping&q={query}&location={location}&hl=en&gl=us&api_key={api_key}"
     response = requests.get(url)
     data = response.json()
@@ -22,7 +23,7 @@ def get_city_from_lat_long(latitude, longitude):
     city = address_components.get(list(address_components)[-5], '')
     return city
 #Example
-latitude = 40.7128
-longitude = -74.0060
+latitude = 40.6341771
+longitude = -74.0849958
 result = get_city_from_lat_long(latitude, longitude)
 print(result)

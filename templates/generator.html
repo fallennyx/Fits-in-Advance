@@ -28,16 +28,16 @@
          function showPosition(position) {
             const latitude = position.coords.latitude;
             const longitude = position.coords.longitude;
-            localStorage.setItem("latitude", latitude);
-            localStorage.setItem("longitude", longitude);
+            sessionStorage.setItem("latitude", latitude);
+            sessionStorage.setItem("longitude", longitude);
             // Redirect to the new page
-            window.location.href = "templates/style.html";
+            window.location.href = "/style";
         }
          function searchLocation() {
             const locationInput = document.getElementById("location-input").value;
-            localStorage.setItem("city", locationInput);
+            sessionStorage.setItem("city", locationInput);
             // Redirect to the new page
-            window.location.href = "templates/style.html";
+            window.location.href = "/style";
         }
     </script>
 {% endblock %}
