@@ -28,12 +28,33 @@
             contentType: "application/json",
             data: JSON.stringify(data),
             success: function(response) {
-                console.log(response);
+                displayWeatherForecast(response);
             },
             error: function(error) {
                 console.error('Error fetching data:', error);
             }
         });
+        function displayWeatherForecast(weatherData) {
+             const forecastInfoDiv = $("#forecast-info");
+             forecastInfoDiv.empty();
+
+             // Loop through each day's weather data and create HTML elements to display it
+             weatherData.forEach(dayForecast => {
+                 const temp = dayForecast[0];
+                 const condition = dayForecast[1];
+                 const rainCheck = dayForecast[2];
+
+                 // Create a new <div> element to display the weather info for the day
+                 const dayDiv = $("<div></div>");
+
+                 // Add the weather info to the <div> element
+                 dayDiv.append(`<p>Temperature: ${temp}°F</p>`);
+                 dayDiv.append(`<p>Condition: ${condition}</p>`);
+                 dayDiv.append(`<p>Rain Check: ${rainCheck ? "Yes" : "No"}</p>`);
+
+                 // Add the <div> element to the forecastInfoDiv
+                 forecastInfoDiv.append(dayDiv);
+             });}
     </script>
 
 </body>

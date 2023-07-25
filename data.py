@@ -18,5 +18,5 @@ def get_forecast(location):
     forecast = wrap_obj.getForecast(location) #returns a list of lists, where each element represents a day with climate, temperature, and rain check.
     return jsonify(forecast)
 
-print(get_outfits("male","newyork"))
+#print(get_outfits("male","newyork"))
 
