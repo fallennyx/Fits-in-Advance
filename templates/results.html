@@ -28,6 +28,7 @@
             contentType: "application/json",
             data: JSON.stringify(data),
             success: function(response) {
+                //RESPONSE IS FORECAST DATA
                 displayWeatherForecast(response);
             },
             error: function(error) {
