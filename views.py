@@ -12,6 +12,10 @@ def home():
 def generator():
     return render_template("generator.html")
 
+@views.route("/style")
+def style():
+    return render_template("style.html")
+
 @views.route("/results")
 def results():
     return render_template("results.html")
