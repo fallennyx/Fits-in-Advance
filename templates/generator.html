@@ -3,15 +3,19 @@
 {% block title %}Generator{% endblock %}
 {% block content %}
 <link rel="stylesheet" href="static/generator-styles.css" type="text/css">
-     <h1 class="page-title">Let's Plan Your Fit!</h1>
+     <h1 class="home-title" id="space-out">LET'S PLAN YOUR FIA</h1>
     <!-- we needed to space out the space below the title quickly -->
-    <br><br><br><br><br>
+    <br><br><br><br><br><br>
      <div class="location-inputs">
         <div class="current-location-button">
             <button class="curr-loc-result button" type="submit" id="current-location-button">Current location</button>
         </div>
+        <br/>
+        <br/>
         <div class="location-search-bar">
-            <input type="text" placeholder="Enter City" id="location-input">
+            <input type="text" class="location-search-bar-control location-search-bar-input" placeholder="Enter City" id="location-input">
+            <span class="left-pan"><i class="fa fa-microphone"></i></span>
+            <br/>
             <button class="search-result button" type="submit" id="search-button">Search</button>
         </div>
     </div>

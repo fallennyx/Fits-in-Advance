@@ -38,9 +38,10 @@ def get_data_from_results():
 
             city = data.get("city")
             gender = data.get("gender")
-            forecast = get_forecast(city)
-            outfits=get_outfits(gender,city)
-            datadic={"forecast":forecast,"outfits":outfits}
+            startDay = data.get("startDay", 0)  # Use 0 as the default value if startDay is not provided
+            forecast = get_forecast(city, startDay)
+            outfits = get_outfits(gender, city, startDay)
+            datadic = {"forecast": forecast, "outfits": outfits}
             return jsonify(datadic)
         except Exception as e:
             return jsonify({"error": str(e)}), 400
@@ -48,3 +49,4 @@ app.register_blueprint(views, url_prefix="/")
 
 if __name__ == '__main__':
     app.run(debug=True, host="0.0.0.0")
+

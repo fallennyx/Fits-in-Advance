@@ -1,3 +1,4 @@
+
 *{
     color: #262220;
     font-family: "Helvetica Neue", "HelveticaNeue-Light", "Helvetica Neue Light", Helvetica, Arial, "Lucida Grande", sans-serif; 
@@ -99,4 +100,29 @@ button{
 
 .button {
     text-align: center;
+}
+
+#space-out2 {
+  letter-spacing: 1.5em;
+  text-align: center;
+}
+
+#space-out {
+  letter-spacing: 1em;
+  text-align: center;
+}
+
+.home-background{
+  display: grid;
+  align-items: center;
+}
+
+#space-out2::after {
+  content: "";
+  margin-left: -2em; /* This should be the same value as your letter-spacing */
+}
+
+#space-out::after {
+  content: "";
+  margin-left: -2em; /* This should be the same value as your letter-spacing */
 }

@@ -3,62 +3,120 @@
 
 {% block content %}
 
+<link rel="stylesheet" href="static/results-styles.css" type="text/css">
 <body>
-    <h1>Results</h1>
+    <h1 class="home-title" id="space-out">YOUR FIA RESULTS</h1>
 
-    <div id="outfits-info"></div>
-    <div id="forecast-info"></div>
+    <div id="loading-message">Loading...</div>
+
+
+    <div id="outfits-info" class="outfit-pic"></div>
+    <div id="forecast-info" class="forecast-items"></div>
+    <div id="searchRes-info"></div>
 
     <!-- Display the images -->
-    <div id="image-gallery"></div>
+    <div id="forecast-items-container"></div>
+    
+
+    <!-- Add this button -->
+    <div class = "buttons">
+        <button class = "button" id="load-more">Load next 3 days</button>
+        <button class = "button" id="favs-button">View Favorites</button>
+    </div>
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         const city = sessionStorage.getItem('city');
         const gender = sessionStorage.getItem('gender');
 
-        const data = {
-            "city": city,
-            "gender": gender
-        };
+        let startDay = 0; // Add this line
 
-        $.ajax({
-            url: "/x",
-            method: "POST",
-            contentType: "application/json",
-            data: JSON.stringify(data),
-            success: function(response) {
-                // Extract forecast and outfit data from the response
-                const forecastData = response.forecast;
-                const outfitData = response.outfits;
+        function loadData() {
+            $('#loading-message').show();
 
-                // Display forecast information
-                const forecastInfoDiv = $("#forecast-info");
-                forecastInfoDiv.empty(); // Clear any previous content
+            const data = {
+                "city": city,
+                "gender": gender,
+                "startDay": startDay // Add this line
+            };
 
-                forecastData.forEach(day => {
-                    const temperature = day[0];
-                    const weatherDescription = day[1];
-                    const precipitation = day[2];
+            $.ajax({
+                url: "/x",
+                method: "POST",
+                contentType: "application/json",
+                data: JSON.stringify(data),
+                success: function(response) {
+                    $('#loading-message').hide();
+                    // Extract forecast and outfit data from the response
+                    const forecastData = response.forecast;
+                    const outfitData = response.outfits;
 
-                    const forecastItem = `<p>Temperature: ${temperature}°C, Weather: ${weatherDescription}, Precipitation: ${precipitation}</p>`;
-                    forecastInfoDiv.append(forecastItem);
-                });
+                    if (forecastData.length !== outfitData.length) {
+                        console.error(`Length mismatch: forecastData has ${forecastData.length} items, but outfitData has ${outfitData.length} items`);
+                    }
 
-                // Display outfit information
-                const outfitInfoDiv = $("#outfits-info");
-                outfitInfoDiv.empty(); // Clear any previous content
+                    // Display forecast and outfit information
+                    const forecastItemsContainer = $("#forecast-items-container");
 
-                outfitData.forEach(outfitURL => {
-                    const outfitItem = `<img src="${outfitURL}" alt="Outfit Image" />`;
-                    outfitInfoDiv.append(outfitItem);
-                });
-            },
-            error: function(error) {
-                console.error('Error fetching data:', error);
-            }
-        });
+                    forecastData.forEach((day, index) => {
+                        const temperatureF = day[0];
+                        const temperatureC = (temperatureF - 32) * 5/9; // Convert Fahrenheit to Celsius
+                        const weatherDescription = day[1];
+                        const precipitation = day[2];
+                        const outfitURL = outfitData[index]; // Get the corresponding outfit URL
+
+                        const dayNumber = startDay + index + 1; // Modify this line
+
+                        const forecastItem = `
+                            <div class="forecast-item">
+                                <p>Day ${dayNumber}: ${weatherDescription} - ${temperatureC.toFixed(1)}°C/${temperatureF.toFixed(1)}°F</p>
+                                <div class="outfit-item">
+                                    <img src="${outfitURL}" alt="Outfit Image for Day ${dayNumber}" />
+                                    <button class="like-button">🤍</button>
+                                </div>
+                            </div>
+                        `;
+                        forecastItemsContainer.append(forecastItem);
+                    });
+
+                    const searchResInfoDiv = $("#searchRes-info");
+                    searchResInfoDiv.empty();
+
+                    if (Array.isArray(searchResData)) {
+                        searchResData.forEach(searchURL => {
+                            const searchItem = `<p>Sites where you can find these items: "${searchURL}"</p>`;
+                            searchResInfoDiv.append(searchItem);
+                        });
+                    } else {
+                        // Handle the case when searchResData is not an array or is undefined
+                        console.log(searchResData)
+                        console.error('searchResData is not an array or is undefined');
+                    }
+
+                    // Add event listener to the like button
+                    $('.like-button').click(function() {
+                        $(this).toggleClass('liked');
+                        if ($(this).hasClass('liked')) {
+                            $(this).text('❤️');
+                        } else {
+                            $(this).text('🤍');
+                        }
+                    });
+
+                    startDay += 3; // Add this line
+                },
+                error: function(error) {
+                    $('#loading-message').hide();
+                    console.error('Error fetching data:', error);
+                }
+            });
+        }
+
+        // Load the initial data
+        loadData();
+
+        // Load more data when the button is clicked
+        $('#load-more').click(loadData);
     </script>
-
-
 </body>
 {% endblock %}
