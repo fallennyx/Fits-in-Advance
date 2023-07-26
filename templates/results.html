@@ -50,6 +50,8 @@
                     // Extract forecast and outfit data from the response
                     const forecastData = response.forecast;
                     const outfitData = response.outfits;
+                const shopping=response.shopping;
+                console.log(response)
 
                     if (forecastData.length !== outfitData.length) {
                         console.error(`Length mismatch: forecastData has ${forecastData.length} items, but outfitData has ${outfitData.length} items`);

@@ -2,7 +2,7 @@ import os
 
 from flask_cors import CORS
 
-from data import get_outfits, get_forecast
+from data import get_outfits, get_forecast, get_shopping
 from flask import Blueprint, render_template, session, request, jsonify, Flask, flash
 import json
 from __init__ import create_app, db
@@ -95,13 +95,13 @@ def get_data_from_results():
     if request.method == "POST":
         try:
             data = request.get_json()  # Use request.get_json() to parse JSON data
-
             city = data.get("city")
             gender = data.get("gender")
             startDay = data.get("startDay", 0)  # Use 0 as the default value if startDay is not provided
             forecast = get_forecast(city, startDay)
             outfits = get_outfits(gender, city, startDay)
-            datadic = {"forecast": forecast, "outfits": outfits}
+            shopping=get_shopping(gender,city)
+            datadic = {"forecast": forecast, "outfits": outfits,"shopping":shopping}
             return jsonify(datadic)
         except Exception as e:
             return jsonify({"error": str(e)}), 400

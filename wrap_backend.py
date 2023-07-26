@@ -16,13 +16,13 @@ class Wrap_backend:
         for index in range(startDay, min(startDay + 5, len(forecast))):
             image_param = ""
             temp = forecast[index][0]
-            rain_check = forecast[index][2] 
-            if (temp <= 62):
-                image_param = " winter outfit"
+            rain_check = forecast[index][2]
+            if (temp <= 40):
+                image_param = " full body winter outfit in " + location +" at temperatures around " + str(temp) + " degrees"
             elif(temp >= 78.8):
-                image_param = " summer outfit"
+                image_param = " full body  view summer outfit in " + location+ " at temperatures around " + str(temp) + " degrees"
             else:
-                image_param = " spring outfit"
+                image_param = "full body spring outfit in " + location+ " at temperatures around " + str(temp) + " degrees"
             if (rain_check == True):
                 image_param = image_param + " with an umbrella"
             week_params.append(image_param)
