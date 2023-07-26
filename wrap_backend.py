@@ -1,14 +1,12 @@
 from weatherAPI import WeatherReport
 from dall_E import Dall_Images
-from shopping import serAPI
 import time
 
 class Wrap_backend:
     
-    def __init__(self, dall_key, weather_key, ser_key):
+    def __init__(self, dall_key, weather_key):
         self.dall_obj = Dall_Images(dall_key)
         self.weather_obj = WeatherReport(weather_key)
-        self.serAPI_obj = serAPI(ser_key)
 
     def get_imageParams(self, location, startDay):
         week_params = []
@@ -16,17 +14,18 @@ class Wrap_backend:
         for index in range(startDay, min(startDay + 5, len(forecast))):
             image_param = ""
             temp = forecast[index][0]
-            rain_check = forecast[index][2]
-            if (temp <= 40):
-                image_param = " full body winter outfit in " + location +" at temperatures around " + str(temp) + " degrees"
+            rain_check = forecast[index][2] 
+            if (temp <= 62):
+                image_param = " winter outfit"
             elif(temp >= 78.8):
-                image_param = " full body  view summer outfit in " + location+ " at temperatures around " + str(temp) + " degrees"
+                image_param = " summer outfit"
             else:
-                image_param = "full body spring outfit in " + location+ " at temperatures around " + str(temp) + " degrees"
+                image_param = " spring outfit"
             if (rain_check == True):
                 image_param = image_param + " with an umbrella"
             week_params.append(image_param)
         return week_params
+
 
     def getForecast(self, location, startDay):
         forecast = self.weather_obj.get_forecast(location)
@@ -40,12 +39,3 @@ class Wrap_backend:
             print(f"Day {startDay + index + 1}: {image_url}")
             url_list.append(image_url)
         return url_list
-
-    def get_shoppingResults(self, gender, location):
-        queries = self.get_imageParams(location, 0)
-        shopping_results = []
-        for index in range(min(5, len(queries))):
-            query = gender + queries[index]
-            result = self.serAPI_obj.get_shopping_info(query, location)
-            shopping_results.append(result)
-        return shopping_results

@@ -9,23 +9,20 @@
 
     <div id="loading-message">Loading...</div>
 
-
-    <div id="outfits-info" class="outfit-pic"></div>
-    <div id="forecast-info" class="forecast-items"></div>
-    <div id="searchRes-info"></div>
+    <div id="outfits-info"></div>
+    <div id="forecast-info"></div>
 
     <!-- Display the images -->
     <div id="forecast-items-container"></div>
-    
 
     <!-- Add this button -->
     <div class = "buttons">
-        <button class = "button" id="load-more">Load next 3 days</button>
+        <button class = "button" id="load-more">Load next 5 days</button>
         <button class = "button" id="favs-button">View Favorites</button>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" ></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js">
         const city = sessionStorage.getItem('city');
         const gender = sessionStorage.getItem('gender');
 
@@ -50,8 +47,6 @@
                     // Extract forecast and outfit data from the response
                     const forecastData = response.forecast;
                     const outfitData = response.outfits;
-                const shopping=response.shopping;
-                console.log(response)
 
                     if (forecastData.length !== outfitData.length) {
                         console.error(`Length mismatch: forecastData has ${forecastData.length} items, but outfitData has ${outfitData.length} items`);
@@ -81,20 +76,6 @@
                         forecastItemsContainer.append(forecastItem);
                     });
 
-                    const searchResInfoDiv = $("#searchRes-info");
-                    searchResInfoDiv.empty();
-
-                    if (Array.isArray(searchResData)) {
-                        searchResData.forEach(searchURL => {
-                            const searchItem = `<p>Sites where you can find these items: "${searchURL}"</p>`;
-                            searchResInfoDiv.append(searchItem);
-                        });
-                    } else {
-                        // Handle the case when searchResData is not an array or is undefined
-                        console.log(searchResData)
-                        console.error('searchResData is not an array or is undefined');
-                    }
-
                     // Add event listener to the like button
                     $('.like-button').click(function() {
                         $(this).toggleClass('liked');
@@ -105,7 +86,7 @@
                         }
                     });
 
-                    startDay += 3; // Add this line
+                    startDay += 5; // Add this line
                 },
                 error: function(error) {
                     $('#loading-message').hide();
