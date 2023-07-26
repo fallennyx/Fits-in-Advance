@@ -1,37 +1,10 @@
-import os
+from flask import Blueprint, render_template, request, flash, redirect, url_for
+from models import User
 
-from flask_cors import CORS
+auth = Blueprint('auth', __name__)
 
-from data import get_outfits, get_forecast
-from flask import Blueprint, render_template, session, request, jsonify, Flask, flash
-import json
-from __init__ import create_app, db
-from models import User  # Import the User model from your models.py file
-
-app = create_app()
-CORS(app)
-
-# Define the views blueprint
-views = Blueprint(__name__, "views")
-
-@views.route("/")
-def home():
-    return render_template("home.html")
-
-@views.route("/generator")
-def generator():
-    return render_template("generator.html")
-
-@views.route("/style")
-def style():
-    return render_template("style.html")
-
-@views.route("/results")
-def results():
-    return render_template("results.html")
-
-
-@views.route('/login', methods=['GET', 'POST'])
+#route for logging in 
+@auth.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
         email = request.form.get('email')
@@ -53,12 +26,12 @@ def login():
     return render_template("login.html", user=current_user)
 
 #route for logging out
-@views.route('/logout')
+@auth.route('/logout')
 def logout():
     return "<p>Logout</p>"
 
 #route for signing up
-@views.route('/sign-up', methods=['GET', 'POST'])
+@auth.route('/sign-up', methods=['GET', 'POST'])
 def sign_up():
     if request.method == 'POST':
         email = request.form.get('email')
@@ -89,25 +62,3 @@ def sign_up():
             return redirect(url_for('views.home'))
     #render sign up template
     return render_template("sign_up.html", user="Ani")
-
-@views.route("/x", methods=["GET", "POST"])
-def get_data_from_results():
-    if request.method == "POST":
-        try:
-            data = request.get_json()  # Use request.get_json() to parse JSON data
-
-            city = data.get("city")
-            gender = data.get("gender")
-            startDay = data.get("startDay", 0)  # Use 0 as the default value if startDay is not provided
-            forecast = get_forecast(city, startDay)
-            outfits = get_outfits(gender, city, startDay)
-            datadic = {"forecast": forecast, "outfits": outfits}
-            return jsonify(datadic)
-        except Exception as e:
-            return jsonify({"error": str(e)}), 400
-app.register_blueprint(views, url_prefix="/")
-
-
-if __name__ == '__main__':
-    app.run(debug=True, host="0.0.0.0")
-
