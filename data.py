@@ -5,7 +5,7 @@ from wrap_backend import Wrap_backend
 
 data = Blueprint('data', __name__)
 
-wrap_obj = Wrap_backend('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','903e781b4a8c47d9ab4200052231907')
+wrap_obj = Wrap_backend('dallekey','weatherkey', 'serpkey')
 
 def get_outfits(gender, location):
     #OLD!gender = category.args.get('gender')
@@ -16,7 +16,11 @@ def get_outfits(gender, location):
 def get_forecast(location):
     #OLD!location = category.args.get('location')
     forecast = wrap_obj.getForecast(location) #returns a list of lists, where each element represents a day with climate, temperature, and rain check.
-    return (forecast)
+    return forecast
+
+def get_shopping(gender, location):
+    shopResults = wrap_obj.get_shoppingResults(gender, location)
+    return shopResults
 
 #print(get_outfits("male","newyork"))
-
+#print(get_shopping('masculine', "new york"))

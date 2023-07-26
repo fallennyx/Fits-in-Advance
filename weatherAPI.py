@@ -25,5 +25,5 @@ class WeatherReport:
             week_forecast.append(day_forecast)
         return week_forecast #returns a list of lists, where each element is a day with climate, temperature and rain check
 
-#test = WeatherReport(key)
-#print(test.get_forecast(1))
+#test = WeatherReport("key")
+#print(test.get_forecast("new york"))
