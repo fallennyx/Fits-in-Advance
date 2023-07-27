@@ -16,16 +16,15 @@
     <div id="forecast-items-container"></div>
 
     <!-- Add this button -->
-    <div class = "buttons">
-        <button class = "button" id="load-more">Load next 5 days</button>
-        <button class = "button" id="favs-button">View Favorites</button>
+    <div class="buttons">
+        <button class="button" id="load-more">Load next 5 days</button>
+        <button class="button" id="favs-button">View Favorites</button>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        const city = sessionStorage.getItem('city');
+        city = sessionStorage.getItem('city');
         const gender = sessionStorage.getItem('gender');
-
         let startDay = 0; // Add this line
 
         function loadData() {
@@ -34,7 +33,8 @@
             const data = {
                 "city": city,
                 "gender": gender,
-                "startDay": startDay // Add this line
+                "startDay": startDay, // Add this line
+
             };
 
             $.ajax({
@@ -47,30 +47,37 @@
                     // Extract forecast and outfit data from the response
                     const forecastData = response.forecast;
                     const outfitData = response.outfits;
+                    const shop = response.shopping;
+                    console.log(shop);
 
-                    if (forecastData.length !== outfitData.length) {
-                        console.error(`Length mismatch: forecastData has ${forecastData.length} items, but outfitData has ${outfitData.length} items`);
+                    if (forecastData.length !== outfitData.length || outfitData.length !== shop.length) {
+                        console.error(`Data length mismatch`);
+                        return;
                     }
 
                     // Display forecast and outfit information
                     const forecastItemsContainer = $("#forecast-items-container");
+                    forecastItemsContainer.empty(); // Clear existing content
 
                     forecastData.forEach((day, index) => {
                         const temperatureF = day[0];
-                        const temperatureC = (temperatureF - 32) * 5/9; // Convert Fahrenheit to Celsius
+                        const temperatureC = (temperatureF - 32) * 5 / 9; // Convert Fahrenheit to Celsius
                         const weatherDescription = day[1];
                         const precipitation = day[2];
                         const outfitURL = outfitData[index]; // Get the corresponding outfit URL
+                        const shopLink = shop[index]; // Get the corresponding shop link
 
                         const dayNumber = startDay + index + 1; // Modify this line
 
                         const forecastItem = `
                             <div class="forecast-item">
                                 <p>Day ${dayNumber}: ${weatherDescription} - ${temperatureC.toFixed(1)}°C/${temperatureF.toFixed(1)}°F</p>
-                                <div class="outfit-item">
-                                    <img src="${outfitURL}" alt="Outfit Image for Day ${dayNumber}" />
-                                    <button class="like-button">🤍</button>
-                                </div>
+                                <a href="${shopLink}" target="_blank"> <!-- Add the shop link to the outfit image -->
+                                    <div class="outfit-item">
+                                        <img src="${outfitURL}" alt="Outfit Image for Day ${dayNumber}" />
+                                        <button class="like-button">🤍</button>
+                                    </div>
+                                </a>
                             </div>
                         `;
                         forecastItemsContainer.append(forecastItem);

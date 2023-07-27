@@ -1,12 +1,13 @@
 from weatherAPI import WeatherReport
 from dall_E import Dall_Images
+from shopping import serAPI
 import time
-
 class Wrap_backend:
-    
-    def __init__(self, dall_key, weather_key):
+    def __init__(self, dall_key, weather_key, ser_key):
         self.dall_obj = Dall_Images(dall_key)
         self.weather_obj = WeatherReport(weather_key)
+        self.serAPI_obj = serAPI(ser_key)
+
 
     def get_imageParams(self, location, startDay):
         week_params = []
@@ -39,3 +40,12 @@ class Wrap_backend:
             print(f"Day {startDay + index + 1}: {image_url}")
             url_list.append(image_url)
         return url_list
+
+    def get_shoppingResults(self, gender, location,startDay):
+       queries = self.get_imageParams(location,startDay)
+       shopping_results = []
+       for index in range(len(queries)):
+           query = gender + queries[index]
+           result = self.serAPI_obj.get_shopping_info(query, location)
+           shopping_results.append(result)
+       return shopping_results

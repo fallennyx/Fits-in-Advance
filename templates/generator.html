@@ -1,46 +1,85 @@
-
 {% extends "layout.html" %}
 {% block title %}Generator{% endblock %}
 {% block content %}
 <link rel="stylesheet" href="static/generator-styles.css" type="text/css">
-     <h1 class="home-title" id="space-out">LET'S PLAN YOUR FIA</h1>
-    <!-- we needed to space out the space below the title quickly -->
-    <br><br><br><br><br><br>
-     <div class="location-inputs">
-        <div class="current-location-button">
-            <button class="curr-loc-result button" type="submit" id="current-location-button">Current location</button>
-        </div>
-        <br/>
-        <br/>
-        <div class="location-search-bar">
-            <input type="text" class="location-search-bar-control location-search-bar-input" placeholder="Enter City" id="location-input">
-            <span class="left-pan"><i class="fa fa-microphone"></i></span>
-            <br/>
-            <button class="search-result button" type="submit" id="search-button">Search</button>
-        </div>
+<h1 class="home-title" id="space-out">LET'S PLAN YOUR FIA</h1>
+<!-- Add a loading spinner to indicate geolocation in progress -->
+<div id="loading-spinner-container" style="display: none; text-align: center;">
+    <i class="fa fa-spinner fa-spin"></i> Locating...
+</div>
+<div class="location-inputs">
+    <!-- Replace the "Current location" button with the loading spinner -->
+    <div class="current-location-button" id="current-location-button-container">
+        <button class="curr-loc-result button" type="submit" id="current-location-button">Current location</button>
     </div>
-    <script>
-        document.getElementById("current-location-button").addEventListener("click", getCurrentLocation);
-        document.getElementById("search-button").addEventListener("click", searchLocation);
-         function getCurrentLocation() {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(showPosition);
-            } else {
-                alert("Geolocation is not supported by this browser.");
-            }
+    <br>
+    <br>
+    <div class="location-search-bar">
+        <input type="text" class="location-search-bar-control location-search-bar-input" placeholder="Enter City" id="location-input">
+        <br>
+        <button class="search-result button" type="submit" id="search-button">Search</button>
+        <ul class="autocomplete-results" id="autocomplete-results"></ul>
+    </div>
+</div>
+<script>
+    document.getElementById("current-location-button").addEventListener("click", getCurrentLocation);
+    document.getElementById("search-button").addEventListener("click", searchLocation);
+
+    function getCurrentLocation() {
+        if (navigator.geolocation) {
+            showLoadingSpinner(); // Show the loading spinner while geolocating
+            navigator.geolocation.getCurrentPosition(showPosition, showPositionError);
+        } else {
+            alert("Geolocation is not supported by this browser.");
         }
-         function showPosition(position) {
-            const latitude = position.coords.latitude;
-            const longitude = position.coords.longitude;
-            sessionStorage.setItem("latitude", latitude);
-            sessionStorage.setItem("longitude", longitude);
-            // Redirect to the new page
-            window.location.href = "/style";
-        }
-         function searchLocation() {
-            const locationInput = document.getElementById("location-input").value;
-            sessionStorage.setItem("city", locationInput);
-            window.location.href = "/style";
-        }
-    </script>
+    }
+
+    function showLoadingSpinner() {
+        const loadingSpinnerContainer = document.getElementById("loading-spinner-container");
+        const currentLocationButtonContainer = document.getElementById("current-location-button-container");
+        loadingSpinnerContainer.style.display = "block";
+        currentLocationButtonContainer.style.display = "none"; // Hide the button container while showing the spinner
+    }
+
+    function hideLoadingSpinner() {
+        const loadingSpinnerContainer = document.getElementById("loading-spinner-container");
+        const currentLocationButtonContainer = document.getElementById("current-location-button-container");
+        loadingSpinnerContainer.style.display = "none";
+        currentLocationButtonContainer.style.display = "block"; // Show the button container again after hiding the spinner
+    }
+
+    function showPosition(position) {
+        const latitude = position.coords.latitude;
+        const longitude = position.coords.longitude;
+        sessionStorage.setItem("latitude", latitude);
+        sessionStorage.setItem("longitude", longitude);
+
+        const apiURL = `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`;
+        fetch(apiURL)
+            .then(response => response.json())
+            .then(data => {
+                const city = data.locality;
+                sessionStorage.setItem("city", city);
+
+                hideLoadingSpinner(); // Hide the loading spinner after geolocation is done
+                window.location.href = "/style";
+            })
+            .catch(error => {
+                console.error("Error fetching location information:", error);
+                hideLoadingSpinner(); // Hide the loading spinner even if an error occurs
+            });
+    }
+
+    function showPositionError(error) {
+        console.error("Error getting current location:", error);
+        hideLoadingSpinner(); // Hide the loading spinner if an error occurs during geolocation
+    }
+
+    function searchLocation() {
+        const locationInput = document.getElementById("location-input").value;
+        sessionStorage.setItem("city", locationInput);
+        window.location.href = "/style";
+    }
+</script>
 {% endblock %}
+
