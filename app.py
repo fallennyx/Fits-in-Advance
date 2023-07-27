@@ -10,7 +10,7 @@ app = Flask(__name__)
 CORS(app)
 
 # Define the views blueprint
-views = Blueprint(__name__, "views")
+views = Blueprint("views", __name__)
 
 @views.route("/")
 def home():
