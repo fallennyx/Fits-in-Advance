@@ -46,22 +46,14 @@ class Wrap_backend:
         return url_list
 
     def get_shoppingResults(self, gender, location, startDay):
-        queries = self.get_imageParams(location, startDay)
-        shopping_results = []
-        for index in range(len(queries)):
-            query = gender + queries[index]
-            while True:
+            queries = self.get_imageParams(location, startDay)
+            shopping_results = []
+            for index in range(len(queries)):
+                query = gender + queries[index]
                 result = self.serAPI_obj.get_shopping_info(query, location)
-                if result not in shopping_results:
-                    shopping_results.append(result)
-                    break
-                # Add slight variation to the query
-                query = gender + queries[index] + self.get_random_suffix()
-        return shopping_results
+                shopping_results.append(result)
+            return shopping_results
 
-    def get_random_suffix(self):
-        # Generate a random string of length 3 as a suffix
-        return ''.join(random.choices(string.ascii_lowercase, k=3))
 
 
 

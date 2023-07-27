@@ -39,7 +39,8 @@ def get_data_from_results():
             startDay = data.get("startDay", 0)  # Use 0 as the default value if startDay is not provided
             forecast = get_forecast(city, startDay)
             outfits = get_outfits(gender, city, startDay)
-            datadic = {"forecast": forecast, "outfits": outfits}
+            shop= get_shopping(gender, city, startDay)
+            datadic = {"forecast": forecast, "outfits": outfits,"shopping":shop}
             return jsonify(datadic)
         except Exception as e:
             return jsonify({"error": str(e)}), 400
