@@ -1,7 +1,11 @@
-from weatherAPI import WeatherReport
+import random
+import string
+
 from dall_E import Dall_Images
 from shopping import serAPI
-import time
+from weatherAPI import WeatherReport
+
+
 class Wrap_backend:
     def __init__(self, dall_key, weather_key, ser_key):
         self.dall_obj = Dall_Images(dall_key)
@@ -16,12 +20,12 @@ class Wrap_backend:
             image_param = ""
             temp = forecast[index][0]
             rain_check = forecast[index][2] 
-            if (temp <= 62):
-                image_param = " winter outfit"
+            if (temp <= 42):
+                image_param = " winter outfit in "+ str(temp) +"degrees in " + location
             elif(temp >= 78.8):
-                image_param = " summer outfit"
+                image_param = " summer outfit in "+ str(temp) +"degrees in " + location
             else:
-                image_param = " spring outfit"
+                image_param = " spring outfit in "+ str(temp) +"degrees in " + location
             if (rain_check == True):
                 image_param = image_param + " with an umbrella"
             week_params.append(image_param)
@@ -41,11 +45,25 @@ class Wrap_backend:
             url_list.append(image_url)
         return url_list
 
-    def get_shoppingResults(self, gender, location,startDay):
-       queries = self.get_imageParams(location,startDay)
-       shopping_results = []
-       for index in range(len(queries)):
-           query = gender + queries[index]
-           result = self.serAPI_obj.get_shopping_info(query, location)
-           shopping_results.append(result)
-       return shopping_results
+    def get_shoppingResults(self, gender, location, startDay):
+        queries = self.get_imageParams(location, startDay)
+        shopping_results = []
+        for index in range(len(queries)):
+            query = gender + queries[index]
+            while True:
+                result = self.serAPI_obj.get_shopping_info(query, location)
+                if result not in shopping_results:
+                    shopping_results.append(result)
+                    break
+                # Add slight variation to the query
+                query = gender + queries[index] + self.get_random_suffix()
+        return shopping_results
+
+    def get_random_suffix(self):
+        # Generate a random string of length 3 as a suffix
+        return ''.join(random.choices(string.ascii_lowercase, k=3))
+
+
+
+x=Wrap_backend("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", "903e781b4a8c47d9ab4200052231907","2769705d67df11795e20d4fc3a8b28f0bbf7e3cf55ef7e716d1ebef6a39d404f")
+print(x.get_shoppingResults("male", "New York", 0))
