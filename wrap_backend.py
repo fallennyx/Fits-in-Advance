@@ -65,5 +65,5 @@ class Wrap_backend:
 
 
 
-x=Wrap_backend("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", "903e781b4a8c47d9ab4200052231907","2769705d67df11795e20d4fc3a8b28f0bbf7e3cf55ef7e716d1ebef6a39d404f")
-print(x.get_shoppingResults("male", "New York", 0))
+#x=Wrap_backend("dalle", "weather","serp")
+#print(x.get_shoppingResults("male", "New York", 0))
