@@ -5,7 +5,7 @@ from wrap_backend import Wrap_backend
 
 data = Blueprint('data', __name__)
 
-wrap_obj = Wrap_backend('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', '903e781b4a8c47d9ab4200052231907' ) 
+wrap_obj = Wrap_backend('dall-e', 'weather' ) 
 
 def get_outfits(gender, location, startDay):
     outfits = wrap_obj.get_imageList(gender, location, startDay) #returns a list with strings inside each one being a url a picture
