@@ -1,90 +1,66 @@
+
 {% extends "layout.html" %}
 {% block title %}Results{% endblock %}
-
-{% block content %}
-
-<link rel="stylesheet" href="static/results-styles.css" type="text/css">
+ {% block content %}
+ <link rel="stylesheet" href="static/results-styles.css" type="text/css">
 <body>
     <h1 class="home-title" id="space-out">YOUR FIA RESULTS</h1>
-
-    <div id="loading-message">Loading...</div>
-
-    <div id="outfits-info"></div>
+     <div id="loading-message">Loading...</div>
+     <div id="outfits-info"></div>
     <div id="forecast-info"></div>
-
-    <!-- Display the images -->
+     <!-- Display the images -->
     <div id="forecast-items-container"></div>
-
-    <!-- Add this button -->
+     <!-- Add this button -->
     <div class="buttons">
         <button class="button" id="load-more">Load next 5 days</button>
         <button class="button" id="favs-button">View Favorites</button>
     </div>
-
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         city = sessionStorage.getItem('city');
         const gender = sessionStorage.getItem('gender');
-        let startDay = 0; // Add this line
-
-        function loadData() {
+        let startDay = 0;
+         function loadData() {
             $('#loading-message').show();
-
-            const data = {
+             const data = {
                 "city": city,
                 "gender": gender,
-                "startDay": startDay, // Add this line
-
+                "startDay": startDay,
             };
-
-            $.ajax({
+             $.ajax({
                 url: "/x",
                 method: "POST",
                 contentType: "application/json",
                 data: JSON.stringify(data),
                 success: function(response) {
                     $('#loading-message').hide();
-                    // Extract forecast and outfit data from the response
                     const forecastData = response.forecast;
                     const outfitData = response.outfits;
-                    const shop = response.shopping;
-                    console.log(shop);
-
-                    if (forecastData.length !== outfitData.length || outfitData.length !== shop.length) {
+                     if (forecastData.length !== outfitData.length) {
                         console.error(`Data length mismatch`);
                         return;
                     }
-
-                    // Display forecast and outfit information
-                    const forecastItemsContainer = $("#forecast-items-container");
-                    forecastItemsContainer.empty(); // Clear existing content
-
-                    forecastData.forEach((day, index) => {
+                     const forecastItemsContainer = $("#forecast-items-container");
+                    forecastItemsContainer.empty();
+                     forecastData.forEach((day, index) => {
                         const temperatureF = day[0];
-                        const temperatureC = (temperatureF - 32) * 5 / 9; // Convert Fahrenheit to Celsius
+                        const temperatureC = (temperatureF - 32) * 5 / 9;
                         const weatherDescription = day[1];
                         const precipitation = day[2];
-                        const outfitURL = outfitData[index]; // Get the corresponding outfit URL
-                        const shopLink = shop[index]; // Get the corresponding shop link
-
-                        const dayNumber = startDay + index + 1; // Modify this line
-
-                        const forecastItem = `
+                        const outfitURL = outfitData[index];
+                         const dayNumber = startDay + index + 1;
+                         const forecastItem = `
                             <div class="forecast-item">
                                 <p>Day ${dayNumber}: ${weatherDescription} - ${temperatureC.toFixed(1)}°C/${temperatureF.toFixed(1)}°F</p>
-                                <a href="${shopLink}" target="_blank"> <!-- Add the shop link to the outfit image -->
-                                    <div class="outfit-item">
-                                        <img src="${outfitURL}" alt="Outfit Image for Day ${dayNumber}" />
-                                        <button class="like-button">🤍</button>
-                                    </div>
-                                </a>
+                                <div class="outfit-item">
+                                    <img src="${outfitURL}" alt="Outfit Image for Day ${dayNumber}" />
+                                    <button class="like-button">🤍</button>
+                                </div>
                             </div>
                         `;
                         forecastItemsContainer.append(forecastItem);
                     });
-
-                    // Add event listener to the like button
-                    $('.like-button').click(function() {
+                     $('.like-button').click(function() {
                         $(this).toggleClass('liked');
                         if ($(this).hasClass('liked')) {
                             $(this).text('❤️');
@@ -92,8 +68,7 @@
                             $(this).text('🤍');
                         }
                     });
-
-                    startDay += 5; // Add this line
+                     startDay += 5;
                 },
                 error: function(error) {
                     $('#loading-message').hide();
@@ -101,11 +76,7 @@
                 }
             });
         }
-
-        // Load the initial data
-        loadData();
-
-        // Load more data when the button is clicked
+         loadData();
         $('#load-more').click(loadData);
     </script>
 </body>
