@@ -1,5 +1,1 @@
-## README file
-
-Use View > Panels > Join with Closest to make one panel.
-
-Click "VS Code" in the top menu bar to open VS Code.
+FIA uses 3 different Apis to suggest outfits based on the current Location. 
